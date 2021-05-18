@@ -12,7 +12,7 @@ This is a repo for the Final Practical for the subject Data Analysis and Algorit
  d) Moreover, MySQL also uses the Red-Black tree for indexes on tables.
 
 
-#Question 2: Kruskal's Minimum Spanning Tree
+# Question 2: Kruskal's Minimum Spanning Tree
   Complexity Analysis:
   Best Case:O(N logE) 
   Worst Case:O(ElogE) or O(ElogV)
@@ -24,7 +24,7 @@ This is a repo for the Final Practical for the subject Data Analysis and Algorit
   c) Cluster Analysis
  
  
- #Question 3: 
+ # Question 3: 
  ##Bubble
   Complexity:
  a) Worst and Average Case Time Complexity: O(n*n). Worst case occurs when array is reverse sorted.
