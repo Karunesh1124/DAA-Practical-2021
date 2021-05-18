@@ -1,63 +1,135 @@
-#include <bits/stdc++.h>
-using namespace std;
-  
-#define V 5 
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
 
-int minKey(int key[], bool mstSet[]) 
-{  
-    int min = INT_MAX, min_index; 
-  
-    for (int v = 0; v < V; v++) 
-        if (mstSet[v] == false && key[v] < min) 
-            min = key[v], min_index = v; 
-  
-    return min_index; 
-} 
-  
-void printMST(int parent[], int graph[V][V]) 
-{ 
-    cout<<"Edge \tWeight\n"; 
-    for (int i = 1; i < V; i++) 
-        cout<<parent[i]<<" - "<<i<<" \t"<<graph[i][parent[i]]<<" \n"; 
-} 
-  
-void primMST(int graph[V][V]) 
-{ 
-    int parent[V]; 
-    
-    int key[V]; 
-      
-    bool mstSet[V]; 
-  
-    for (int i = 0; i < V; i++) 
-        key[i] = INT_MAX, mstSet[i] = false; 
-  
- 
-    key[0] = 0; 
-    parent[0] = -1;
-  
-    for (int count = 0; count < V - 1; count++)
-    { 
-        int u = minKey(key, mstSet); 
-  
-        mstSet[u] = true; 
-  
-        for (int v = 0; v < V; v++) 
-            if (graph[u][v] && mstSet[v] == false && graph[u][v] < key[v]) 
-                parent[v] = u, key[v] = graph[u][v]; 
-    } 
-  
-    printMST(parent, graph); 
-} 
-  
-int main() 
-{ 
-    int graph[V][V] = { { 0, 5, 0, 6, 0 }, 
-                        { 2, 0, 3, 8, 5 }, 
-                        { 0, 3, 0, 0, 7 }, 
-                        { 6, 7, 0, 0, 9 }, 
-                        { 0, 4, 7, 9, 0 } }; 
-    primMST(graph); 
-  
-    return 0; 
+using namespace std;
+
+class Graph
+{
+    int n;
+    int no_edg;
+    int edges[100][4],sets[100][10],top[100];
+
+    public:
+    int input();
+    void initialize_span_t();
+    void sortedges();
+    void kruskal_algo();
+    int find_node(int);
+};
+
+int Graph::input()
+{
+    cout<<"\n***************KRUSKAL'S ALGORITHM****************";
+    cout<<"\nEnter the no. of vertices in the graph:";
+    cin>>n;
+    no_edg=0;
+
+    cout<<"\nEnter the weights of the following:\n";
+
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=i+1;j<=n;j++)
+        {
+            cout<<"edge "<<i<<" , "<<j<<" :";
+            int w;
+            cin>>w;
+            if(w!=0)
+            {
+                no_edg++;
+
+                edges[no_edg][1]=i;
+                edges[no_edg][2]=j;
+                edges[no_edg][3]=w;
+            }
+        }
+    }
+
+    cout<<"\n\nThe edges in the given graph are::\n";
+    for(int i=1;i<=no_edg;i++)
+    {
+        cout<<" < "<<edges[i][1]<<" , "<<edges[i][2]<<" > "<<edges[i][3]<<endl;
+    }
+}
+
+void Graph::sortedges()
+{
+    for(int i=1;i<=no_edg-1;i++)
+    {
+        for(int j=1;j<=no_edg-i;j++)
+        {
+            if(edges[j][3]>edges[j+1][3])
+            {
+                int t=edges[j][1];
+                edges[j][1]=edges[j+1][1];
+                edges[j+1][1]=t;
+
+                t=edges[j][2];
+                edges[j][2]=edges[j+1][2];
+                edges[j+1][2]=t;
+
+                t=edges[j][3];
+                edges[j][3]=edges[j+1][3];
+                edges[j+1][3]=t;
+            }
+        }
+    }
+
+    cout<<"\n\nAfter sorting the edges in the given graph are::\n";
+    for(int i=1;i<=no_edg;i++)
+    cout<<""<<edges[i][1]<<" , "<<edges[i][2]<<" > ::"<<edges[i][3]<<endl;
+}
+
+void Graph::kruskal_algo()
+{
+    for(int i=1;i<=n;i++)
+    {
+        sets[i][1]=i;
+        top[i]=1;
+    }
+
+    cout<<"\n********* THE MINIMUM SPANNING TREE IS**************";
+    for(int i=1;i<=no_edg;i++)
+    {
+        int p1=find_node(edges[i][1]);
+        int p2=find_node(edges[i][2]);
+
+        if(p1!=p2)
+        {
+            cout<<"The edge included in MST is ::"<<" < "<<edges[i][1]<<" , "<<edges[i][2]<<" > "<<endl;
+            for(int j=1;j<=top[p2];j++)
+            {
+                top[p1]++;
+                sets[p1][top[p1]]=sets[p2][j];
+            }
+            top[p2]=0;
+        }
+        else
+        {
+            cout<<"Edge "<<" < "<<edges[i][1]<<" , "<<edges[i][2]<<" > "<<"is not included as it forms a cycle\n\n";
+        }
+    }
+}
+
+int Graph::find_node(int n)
+{
+    for(int i=1;i<=no_edg;i++)
+    {
+        for(int j=1;j<=top[i];j++)
+        {
+            if(n==sets[i][j])
+                return i;
+        }
+    }
+
+    return -1;
+}
+
+int main()
+{
+    Graph obj;
+    obj.input();
+    obj.sortedges();
+    obj.kruskal_algo();
+    return 0;
 }
