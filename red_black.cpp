@@ -1,8 +1,4 @@
-#include<iostream>
-#include<stdlib.h>
-#include<stack>
-
-//false--red,true--black
+#include<bits/stdc++.h>
 using namespace std;
 
 class BSTNode
@@ -52,8 +48,6 @@ class BST
         return search(root,el);
     }
 
-    void iterativePreorder();
-    void iterativeInorder();
     void insert(int&);
     void insertfixup(BSTNode*);
     void deletefixup(BSTNode*);
@@ -90,9 +84,9 @@ int BST::search(BSTNode* p,int& el)
             cout<<"\n"<<p->el<<"color :";
 
             if(p->color)
-                cout<<"black";
+                cout<<"black"<<"\n";
             else
-                cout<<"red";
+                cout<<"red"<<"\n";
 
             return 0;
         }
@@ -102,28 +96,6 @@ int BST::search(BSTNode* p,int& el)
             p = p->right;
     }
     return -1;
-}
-
-void BST::iterativePreorder()
-{
-    stack<BSTNode*> travStack;
-    BSTNode *p = root;
-    if (p != 0)
-    {
-        travStack.push(p);
-        while (!travStack.empty())
-        {
-            p = travStack.top();
-            travStack.pop();
-            visit(p);
-
-            if (p->right != 0)
-                travStack.push(p->right);
-
-            if (p->left != 0)
-                travStack.push(p->left);
-        }
-    }
 }
 
 void BST::insert(int& el)
@@ -147,6 +119,7 @@ void BST::insert(int& el)
 
     insertfixup(p);
 }
+
 
 void BST::leftrotate(BSTNode* x)
 {
@@ -458,41 +431,7 @@ void BST::clear(BSTNode * p)
     }
 }
 
-void BST::iterativeInorder()
-{
-    stack<BSTNode*> travStack;
-    BSTNode *p = root;
-    while (p != 0)
-    {
-        while (p != 0)
-        {
-            if (p->right)
-            travStack.push(p->right);
-            travStack.push(p);
-            p = p->left;
-        }
 
-        p = travStack.top();
-        travStack.pop();
-
-        while (!travStack.empty() && p->right == 0)
-        {
-            visit(p);
-            p = travStack.top();
-            travStack.pop();
-        }
-
-        visit(p);
-
-        if (!travStack.empty())
-        {
-            p = travStack.top();
-            travStack.pop();
-        }
-        else
-            p = 0;
-    }
-}
 
 int main()
 {
@@ -502,7 +441,7 @@ int main()
     {
         int x;
         system("cls");
-        cout<<"Enter your choice.\n1.Insertion.\n2.Deletion.\n3.Search a number.\n4.Display its preorder and inorder transversals.\n5.Exit.\n";
+        cout<<"Enter your choice.\n1.Insertion.\n2.Deletion.\n3.Search a number.\n4.Exit.\n";
         cin>>dtchoice;
 
         switch(dtchoice)
@@ -534,19 +473,8 @@ int main()
                         system("pause");
                         break;
 
+
             case 4: system("cls");
-                        if(t1.isEmpty())
-                            cout<<"\nTree is empty.\n";
-                        else{
-                            cout<<"\nPreorder:\n";
-
-                        t1.iterativePreorder();
-                        cout<<"\nInorder:\n";
-                        t1.iterativeInorder();}
-                        system("pause");
-                        break;
-
-            case 5: system("cls");
                         exit(0);
                         break;
 
@@ -556,4 +484,3 @@ int main()
     }while(true);
     return 0;
 }
-
